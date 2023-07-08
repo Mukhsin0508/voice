@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { ChatGPTAPI } from "chatgpt";
+import { Configuration, OpenAIApi } from "openai";
 
 dotenv.config();
 const PORT = process.env.APP_PORT ? parseInt(process.env.APP_PORT, 10) : 3000;
@@ -12,31 +13,55 @@ app.use(cors());
 
 app.post("", async (req, res) => {
   let { message } = req.headers;
-  const openai = new ChatGPTAPI({
+  if(message == null) return;
+  // const openai = new ChatGPTAPI({
+  //   apiKey: process.env.API_KEY,
+  // });
+  const configuration = new Configuration({
+    organization: "org-xhDpKkrsdW3W2i6bFgSuzN2k",
     apiKey: process.env.API_KEY,
   });
+  const openai = new OpenAIApi(configuration);
 
   try {
-    const completion = await openai.sendMessage(message, {
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user" }],
-    });
+    // const completion = await openai.createChatCompletion(message, {
+    //   model: "gpt-3.5-turbo",
+    //   messages: [{ role: "user" }],
+    // });
 
-    if (completion.text.toLowerCase().includes("chatgpt")) {
-      completion.text = completion.text
+    let completion = await fetch(process.env.GPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "text-davinci-003",
+        max_tokens: 2048,
+        temperature: 0.1,
+        n: 1,
+        stop: null,
+        prompt: message,
+      }),
+    }).then((res) => res.json());
+
+    let response = completion.choices[0].text;
+
+    if (response.toLowerCase().includes("chatgpt")) {
+      response = response
         .toLowerCase()
         .replace("chatgpt", "wider a i");
     }
 
-    if (completion.text.toLowerCase().includes("openai")) {
-      completion.text = completion.text
+    if (response.toLowerCase().includes("openai")) {
+      response = response
         .toLowerCase()
         .replace("openai", "a hardworking team");
     }
 
     return res.status(200).json({
       question: message,
-      reply: completion.text,
+      reply: response,
       time: new Date().toLocaleTimeString(),
     });
   } catch (error) {
