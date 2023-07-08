@@ -40,7 +40,7 @@ app.post("", async (req, res) => {
       time: new Date().toLocaleTimeString(),
     });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res
       .status(200)
       .json({ reply: "Something went wrong! Please try again!" });
