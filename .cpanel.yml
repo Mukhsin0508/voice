@@ -1,6 +1,6 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/wideraiu/repositories/WiderAI/.git/public_html/
+    - export DEPLOYPATH=/home/wideraiu/public_html/
     - /bin/cp -R node_modules $DEPLOYPATH
     - /bin/cp -R src $DEPLOYPATH
     - /bin/cp -R .env $DEPLOYPATH
@@ -8,4 +8,3 @@ deployment:
     - /bin/cp -R package.json $DEPLOYPATH
     - /bin/cp -R test.http $DEPLOYPATH
 
-    
