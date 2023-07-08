@@ -1,0 +1,11 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/wideraiu/repositories/WiderAI/.git/public_html/
+    - /bin/cp -R node_modules $DEPLOYPATH
+    - /bin/cp -R src $DEPLOYPATH
+    - /bin/cp -R .env $DEPLOYPATH
+    - /bin/cp -R package-lock.json $DEPLOYPATH
+    - /bin/cp -R package.json $DEPLOYPATH
+    - /bin/cp -R test.http $DEPLOYPATH
+
+    
