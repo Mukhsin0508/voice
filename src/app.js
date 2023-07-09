@@ -33,7 +33,7 @@ app.post("", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: 'Bearer ${process.env.API_KEY}',
+        Authorization: `Bearer ${process.env.API_KEY}`, // Use backticks for template literals
       },
       body: JSON.stringify({
         model: "text-davinci-003",
@@ -44,8 +44,18 @@ app.post("", async (req, res) => {
         prompt: message,
       }),
     }).then((res) => res.json());
+     
+     
 
-    let response = completion.choices[0].text;
+    console.log(completion);
+    let response = '';
+    
+    if (completion.choices && completion.choices.length > 0) {
+      response = completion.choices[0].text;
+    } else {
+      // Handle the case when `completion.choices` is undefined or empty
+      response = 'No response available';
+    }
 
     if (response.toLowerCase().includes("chatgpt")) {
       response = response
