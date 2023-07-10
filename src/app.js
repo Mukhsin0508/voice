@@ -33,12 +33,12 @@ app.post("", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.API_KEY}`, // Use backticks for template literals
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // Use backticks for template literals
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ 
         model: "text-davinci-003",
-        max_tokens: 2048,
-        temperature: 0.1,
+        max_tokens: 3000,
+        temperature: 0,
         n: 1,
         stop: null,
         prompt: message,
