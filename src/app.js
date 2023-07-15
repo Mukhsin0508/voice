@@ -4,12 +4,17 @@ import dotenv from "dotenv";
 import { ChatGPTAPI } from "chatgpt";
 import { Configuration, OpenAIApi } from "openai";
 
+console.log(process.env)
+
 dotenv.config();
 const PORT = process.env.APP_PORT ? parseInt(process.env.APP_PORT, 10) : 3000;
 
 let app = express();
-app.use(express.json());
+app.use(express.json()); 
 app.use(cors());
+
+console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY); // Add this line
+
 
 app.post("", async (req, res) => {
   let { message } = req.headers;
@@ -19,7 +24,7 @@ app.post("", async (req, res) => {
   // });
   const configuration = new Configuration({
     organization: "org-xhDpKkrsdW3W2i6bFgSuzN2k",
-    apiKey: process.env.API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
